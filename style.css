@@ -1,0 +1,18 @@
+/*:root{
+    color defs
+}*/
+*{
+    padding: 0;
+    margin: 0;
+}
+body{
+    font-family: Arial, sans-serif;
+    padding: 10px;
+}
+#fundamental-controls{
+    background-color: grey;
+    label, input, button {
+        display: block;
+        margin: 1rem 0;
+    }
+}
