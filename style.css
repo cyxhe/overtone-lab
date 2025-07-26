@@ -10,7 +10,7 @@ body{
     padding: 10px;
 }
 #fundamental-controls{
-    background-color: grey;
+    border: solid black 1px;
     label, input, button {
         display: block;
         margin: 1rem 0;

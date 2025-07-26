@@ -33,6 +33,12 @@ function createAudioContext() {
     }
 }
 
+function isVoicePlaying(voiceNum) {
+    const voice = voiceData[voiceNum];
+    return voice.fundamentalOsc !== null;
+}
+
+
 function stopVoice(voiceNum) {
     const voice = voiceData[voiceNum];
     if (voice.fundamentalOsc) {
@@ -179,19 +185,23 @@ function addOvertone(voiceNum) {
     const voice = voiceData[voiceNum];
 
     const container = document.createElement("div");
+    container.setAttribute("data-overtone", "");
 
     const ratioInput = document.createElement("input");
     ratioInput.type = "number";
     ratioInput.step = "0.01";
     ratioInput.value = "1.0";
+    ratioInput.classList.add("ratioInput");
 
     const ampInput = document.createElement("input");
     ampInput.type = "number";
     ampInput.step = "0.01";
     ampInput.value = "1.0";
+    ampInput.classList.add("ampInput");
 
     const muteCheckbox = document.createElement("input");
     muteCheckbox.type = "checkbox";
+    muteCheckbox.classList.add("muteCheckbox");
 
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Delete";
@@ -203,55 +213,33 @@ function addOvertone(voiceNum) {
     container.appendChild(document.createTextNode(" Mute: "));
     container.appendChild(muteCheckbox);
     container.appendChild(deleteButton);
+
     voice.overtonesContainer.appendChild(container);
 
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-
-    const fundamentalFreq = parseFloat(voice.freqInput.value);
-    const ratio = parseFloat(ratioInput.value);
-    osc.frequency.setValueAtTime(fundamentalFreq * ratio, audioCtx.currentTime);
-    gain.gain.setValueAtTime(
-        parseFloat(voice.ampSlider.value) * parseFloat(ampInput.value),
-        audioCtx.currentTime
-    );
-
-    osc.connect(gain).connect(audioCtx.destination);
-    osc.start();
-
-    const overtone = {
-        container,
-        osc,
-        gain,
-        ratio: ratioInput,
-        amp: ampInput,
-        mute: muteCheckbox,
-    };
-
-    voice.overtoneNodes.push(overtone);
-
-    // Update gain when amplitude multiplier or mute changes
+    // Rebind update listeners
     ampInput.addEventListener("input", () => updateOvertoneGains(voiceNum));
     muteCheckbox.addEventListener("change", () => updateOvertoneGains(voiceNum));
-    ratioInput.addEventListener("input", () => {
-        const newRatio = parseFloat(ratioInput.value);
-        if (!isNaN(newRatio)) {
-            const baseFreq = parseFloat(voice.freqInput.value);
-            osc.frequency.setValueAtTime(baseFreq * newRatio, audioCtx.currentTime);
+    ratioInput.addEventListener("input", () => updateOvertoneFrequencies(voiceNum));
+
+    deleteButton.addEventListener("click", () => {
+        container.remove();
+        if (isVoicePlaying(voiceNum)) {
+        playVoice(voiceNum);
+        drawSpectrum();
+        } else {
+            drawSpectrum(); // update visual preview only
         }
     });
 
-    deleteButton.addEventListener("click", () => {
-        osc.stop();
-        osc.disconnect();
-        gain.disconnect();
-        voice.overtoneNodes = voice.overtoneNodes.filter(node => node !== overtone);
-        container.remove();
-        updateOvertoneGains(voiceNum);  // Refresh gain after removal
-    });
-
-    updateOvertoneGains(voiceNum);  // Apply initial gain
+    // Rebuild voice audio to include this new overtone
+    if (isVoicePlaying(voiceNum)) {
+        playVoice(voiceNum);
+        drawSpectrum();
+    } else {
+        drawSpectrum(); // update visual preview only
+    }
 }
+
 
 function updateOvertoneGains(voiceNum) {
     const voice = voiceData[voiceNum];
@@ -262,6 +250,20 @@ function updateOvertoneGains(voiceNum) {
         const effectiveAmp = mute.checked ? 0 : baseAmp * multiplier;
         gain.gain.setValueAtTime(effectiveAmp, audioCtx.currentTime);
     });
+}
+
+function updateOvertoneFrequencies(voiceNum) {
+    const voice = voiceData[voiceNum];
+    const freq = parseFloat(voice.freqInput.value);
+
+    voice.overtoneNodes.forEach(({ osc, ratio }) => {
+        const r = parseFloat(ratio.value);
+        if (!isNaN(r)) {
+            osc.frequency.setValueAtTime(freq * r, audioCtx.currentTime);
+        }
+    });
+
+    drawSpectrum();
 }
 
 
