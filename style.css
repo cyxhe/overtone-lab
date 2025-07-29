@@ -9,9 +9,41 @@ body{
     font-family: Arial, sans-serif;
     padding: 10px;
 }
+h1{
+    margin: 20px 0;
+}
+#tone-controls{
+    display: flex;
+    gap: 10px;
+    .voice{
+        flex-grow: 1;
+        max-width: 45%;
+        border: solid black 1px;
+        border-radius: 5px;
+        padding: 1rem;
+        button{
+            border: none;
+            border-radius: 4px;
+            margin: 5px;
+            padding: 8px;
+            font: inherit;
+            cursor: pointer;
+        }
+    }
+    .ratioInput{
+        width: 40px;
+        margin-right: 10px;
+    }
+    .ampInput{
+        width: 60px;
+        margin-right: 10px;
+    }
+    .muteCheckbox{
+        margin-right: 10px;
+    }
+}
 #fundamental-controls{
-    border: solid black 1px;
-    label, input, button {
+    label, input, button{
         display: block;
         margin: 1rem 0;
     }

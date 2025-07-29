@@ -206,11 +206,11 @@ function addOvertone(voiceNum) {
     const deleteButton = document.createElement("button");
     deleteButton.textContent = "Delete";
 
-    container.appendChild(document.createTextNode("Ratio: "));
+    container.appendChild(document.createTextNode("Frequency Ratio: "));
     container.appendChild(ratioInput);
-    container.appendChild(document.createTextNode(" Amplitude Multiplier: "));
+    container.appendChild(document.createTextNode("Amplitude: "));
     container.appendChild(ampInput);
-    container.appendChild(document.createTextNode(" Mute: "));
+    container.appendChild(document.createTextNode("Mute: "));
     container.appendChild(muteCheckbox);
     container.appendChild(deleteButton);
 
