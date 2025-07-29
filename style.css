@@ -1,27 +1,35 @@
-/*:root{
-    color defs
-}*/
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+:root{
+    --accent-clr: blue;
+}
 *{
     padding: 0;
     margin: 0;
 }
+html{
+    font-family: Poppins, Arial;
+}
 body{
-    font-family: Arial, sans-serif;
-    padding: 10px;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: 20px;
 }
 h1{
-    margin: 20px 0;
+    margin-bottom: 20px;
 }
 #tone-controls{
     display: flex;
-    gap: 10px;
+    gap: 20px;
     .voice{
+        background-color: lightskyblue;
         flex-grow: 1;
         max-width: 45%;
-        border: solid black 1px;
+        border: solid var(--accent-clr) 2px;
         border-radius: 5px;
         padding: 1rem;
         button{
+            color: white;
+            background-color: var(--accent-clr);
             border: none;
             border-radius: 4px;
             margin: 5px;
@@ -29,22 +37,33 @@ h1{
             font: inherit;
             cursor: pointer;
         }
-    }
-    .ratioInput{
+        #fundamental-controls{
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+            #freqInput1, #freqInput2{
+                width: fit-content;
+                border: solid var(--accent-clr) 2px;
+                border-radius: 5px;
+                padding: 5px;
+                font: inherit;
+                font-size: 0.8rem;
+            }
+            #freqSlider1, #freqSlider2, #ampSlider1, #ampSlider2{
+                accent-color: var(--accent-clr);
+            }
+        }
+        .ratioInput{
         width: 40px;
         margin-right: 10px;
-    }
-    .ampInput{
-        width: 60px;
-        margin-right: 10px;
-    }
-    .muteCheckbox{
-        margin-right: 10px;
-    }
-}
-#fundamental-controls{
-    label, input, button{
-        display: block;
-        margin: 1rem 0;
+        }
+        .ampInput{
+            width: 60px;
+            margin-right: 10px;
+        }
+        .muteCheckbox{
+            margin-right: 10px;
+        }
     }
 }
