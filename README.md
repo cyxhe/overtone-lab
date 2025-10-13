@@ -15,3 +15,6 @@ App for experimenting with how overtone spectra affect interval dissonance.
 7/28/25:
 - Made UI improvements
 - Added favicon
+
+10/12/25:
+- Added explicitly stated background color for embedding
