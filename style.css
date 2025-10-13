@@ -12,7 +12,6 @@ html{
 body{
     min-height: 100vh;
     min-height: 100dvh;
-    padding: 0 20px;
     background-color: white;
 }
 h1{
